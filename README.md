@@ -10,6 +10,8 @@ Run the server:
 python3 ticket_server.py
 ```
 
+Open `http://localhost:8000/` in a browser to access the web UI.
+
 Submit a ticket with `curl`:
 
 ```bash

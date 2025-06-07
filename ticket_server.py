@@ -43,7 +43,17 @@ class TicketHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         parsed = urlparse(self.path)
-        if parsed.path == '/tickets':
+        if parsed.path in ('/', '/index.html'):
+            try:
+                with open('index.html', 'rb') as f:
+                    content = f.read()
+                self.send_response(200)
+                self.send_header('Content-Type', 'text/html')
+                self.end_headers()
+                self.wfile.write(content)
+            except FileNotFoundError:
+                self._send_json({'error': 'UI not found'}, status=404)
+        elif parsed.path == '/tickets':
             tickets = load_tickets()
             self._send_json(tickets)
         elif parsed.path.startswith('/tickets/'):
